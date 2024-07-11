@@ -11,26 +11,25 @@ class CashRegister
   end
 
   def add_item(title, price, quantity = 1)
+    quantity.times {self.items << title}
     cost_items = price * quantity
-    self.items << title
     self.total += cost_items
+    self.last_transaction = cost_items
   end
 
   def apply_discount
-    if self.discount != 0
-      discount_percentage = (self.discount.to_f / 100.0)
-      discounted_total = self.total * (1 - discount_percentage)
-      self.total = discounted_total.to_i
-      "After the discount, the total comes to $#{self.total}."
+    if self.discount == 0
+     "There is no discount to apply."
     else
-       "There is no discount to apply."
+      discount_percentage = (self.discount.to_f / 100.0)
+      self.total = (self.total * (1 - discount_percentage)).to_i
+      "After the discount, the total comes to $#{self.total}."
     end
   end
 
-
+  def void_last_transaction
+    self.total -= self.last_transaction
+  end
 end
 
-# order1 = CashRegister.new()
-# order1.add_item("Beer", 6)
-
-# binding.pry
+# ex
